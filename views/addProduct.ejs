@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Emma Store">
+    <meta property="og:description" content="Best online store.">
+    <meta property="og:image" content="https://emmastore.onrender.com/icon.jpg">
+    <meta property="og:url" content="https://emmastore.onrender.com">
+    <title>Welcome to Emma Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://localhost:3500/style.css">
+</head>
+<body>
+    <div class="container border border-dark">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                  <!-- Logo on the far left -->
+                  <a class="navbar-brand" href="/">
+                    <img src="http://localhost:3500/icon.jpg" class="rounded" alt="Logo" width="50" height="auto">
+                  </a>
+            
+                  <!-- Toggle button for small screens -->
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+            
+                  <!-- Links on the far right -->
+                  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </div>
+        <br>
+        <div class="row" id="wel">
+          <h1>Emma Store</h1>
+        </div>
+        <br>
+        <div class="row middle" style="color: white;">
+          <div class="col-10">
+            <div class="row">
+                <form id="property-form" class="py-3">
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product name</label>
+                        <input type="text" class="form-control" id="propName" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pic" class="form-label">Image of product</label>
+                        <input type="file" class="form-control" onchange="upLoad(this)" id="propPic" name="image" required>
+                        <div class="form-control" style="height: 200px; width: 200px; display: flex; justify-content: center; align-items: center;">
+                            <img class="propPic" style="max-width: 100%; max-height: 100%;" src="">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="simple-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="propSDes" name="simple description" rows="2" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Details</label>
+                        <textarea class="form-control" id="propDes" name="description" rows="10" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="units" class="form-label">Product is measured in: </label>
+                        <input type="text" class="form-control" id="units" name="units" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price per Unit</label>
+                        <input type="number" class="form-control" id="price" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Other images of the prroduct</label>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div id="facilities-container">
+    
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary" id="add-facility">Add Image</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+          </div>
+         
+          <div class="col-2" style="position: static; top: 20px;">
+            <img src="http://localhost:3500/icon.jpg" alt="">
+            <p>adverts</p>
+            <img src="http://localhost:3500/huddypro.jpg" alt="">
+            <p>adverts</p>
+            <img src="http://localhost:3500/huddypro.jpg" alt="">
+            <p>adverts</p>
+            <img src="http://localhost:3500/huddypro.jpg" alt="">
+            <p>adverts</p>
+            <img src="http://localhost:3500/huddypro.jpg" alt="">
+          </div>
+        </div>
+        <button class="btn btn-danger" onclick="postD('/op')">kita</button>
+        <br>
+        <div class="row bg-dark text-light text-align-center">
+          <br>
+          <p style="text-align: center;">Best online market ever.</p>
+          <p style="text-align: center;">copyright &copy;Emma 2023</p>
+        </div>
+    </div>
+    <div id="cAlert"></div>
+    <% if (typeof message !== 'undefined') { %>
+        <div class="over">
+          <div class="msg">
+            <div class="card">
+              <div class="card-header">
+                Alert
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Message</h5>
+                <p class="card-text"><%= message %></p>
+                <% if (typeof files !== 'undefined') { %>
+                 <ul>
+                  <% files.forEach(file => { %>
+                   <li><%= file %></li>
+                  <% }) %>
+                 </ul>
+                <% } %>
+                <% if (typeof rfiles !== 'undefined') { %>
+                  <h5>Rejected files</h5>
+                 <ul class="text-danger">
+                  <% rfiles.forEach(file => { %>
+                   <li><%= file %></li>
+                  <% }) %>
+                 </ul>
+                <% } %>
+              </div>
+              <button style="margin: 0 auto;" class="btn btn-danger" onclick="btnClose()">Ok</button>
+              <br>
+            </div>
+          </div>
+        </div>
+        <% } %>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="http://localhost:3500/alert.js" defer></script>
+    <script>
+      function btnClose(){
+        $('.over').css('display','none');
+      }
+    </script>
+</body>
+</html>

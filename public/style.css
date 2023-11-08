@@ -1,0 +1,76 @@
+body{
+    background: hsl(212, 14%, 73%);
+    background-image: url(bg1.png);
+  }
+  #wel{
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.548);
+  }
+  #wel h1{
+    text-shadow: 5px 0  5px white;
+  }
+  .drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    height: 400px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .drop-area form{
+    text-align: left;
+  }
+
+  .drop-area p {
+    margin: 0;
+  }
+
+  #fileList {
+    margin-top: 20px;
+  }
+
+  .file-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .activ{
+    border: 2px dashed #1c053f;
+  }
+  .over{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.192);
+  }
+  .msg{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding-bottom: 10px;
+    max-height: 350px;
+  }
+  .col-md-4{
+    margin-top: 5px;
+  }
+  .col-2{
+    overflow: hidden;
+  }
+  .col-2 img{
+    width: 100%;
+  }
+  .middle{
+    background: rgba(0, 0, 0, 0.548);
+  }
+  .prodImg{
+    width: 100%;
+  }
+  #register{
+    display: none;
+  }

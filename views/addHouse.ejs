@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Emma Store">
+    <meta property="og:description" content="Best online store.">
+    <meta property="og:image" content="https://emmastore.onrender.com/icon.jpg">
+    <meta property="og:url" content="https://emmastore.onrender.com">
+    <title>Welcome to Emma Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://localhost:3500/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row kampala">
+            <div class="col-12"><img class="khh" src="images/holiday_homes_banner.jpg" alt="Kampala Holiday Homes"></div>
+        </div>
+    </div>
+    <nav class="container navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Kampala Holiday Homes</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/properties">Properties</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/advertise">Advertise</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/aboutUs">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/contactUs">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center">This form is to add new house</h1>
+        </div>
+        <div class="row bg-light">
+            <form id="property-form" class="py-3">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Location</label>
+                    <select class="form-control" id="tbName" required>
+                        <option value="" selected disabled>-- Select location of the house--</option>
+                        <% if (locations) { %>
+                            <% locations.forEach(loc => { %>
+                                <option value="<%= loc %>"><%= loc %></option>
+                            <% }) %>
+                        <% } %>
+                    </select>
+                    <nav class="form-control bg-light col-6">If location is missing: <nav class="btn btn-success p-1 m-0" style="display: inline-block;" onclick="addLocation(this)">Add location</nav></nav>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">House Name</label>
+                    <input type="text" class="form-control" id="propName" name="Name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="pic" class="form-label">Image of the house</label>
+                    <input type="file" class="form-control" onchange="upLoad(this)" id="propPic" name="image" required>
+                    <div class="form-control" style="height: 200px; width: 200px; display: flex; justify-content: center; align-items: center;">
+                        <img class="propPic" style="max-width: 100%; max-height: 100%;" src="">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="simple-description" class="form-label">Simple description</label>
+                    <textarea class="form-control" id="propSDes" name="simple description" rows="2" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="propDes" name="description" rows="10" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label>Facilities</label>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div id="facilities-container">
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" id="add-facility">Add Facility</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="row footer">
+            <div class="col-12 bg-danger">
+                <p class="text-light text-center">&copy; KAMPALA HOLIDAY HOMES</p>
+            </div>
+        </div>
+    </div>
+    <div class="warn"></div>
+    <script src="styleLib/jquery.js"></script>
+    <script src="styleLib/bootstrap.bundle.min.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="styleLib/js.js"></script>
+    <script src="styleLib/newHouse.js"></script>
+    <script>
+        // addItem('/addHouse')
+    </script>
+</body>
+</html>
