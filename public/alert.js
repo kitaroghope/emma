@@ -199,9 +199,6 @@ $('#property-form').on('submit', async (e) => {
   }
 });
 
-  
-  
-  
 function addLocation(x){
     var location1 = prompt("Type name of location and press ok","");
     console.log(location1)
@@ -240,4 +237,20 @@ function addLocation(x){
     else{
         customPopUp("nothing was added","ok");
     }
+}
+
+async function postRoute(url){
+  customPopUp("Wait Item is being added to cart");
+  return await fetch(url,{method:'POST'})
+  .then(async (res)=>{
+      return res.json();
+  })
+  .then(async (data)=>{
+    customPopUp(data.message,"ok");
+    return true
+  })
+  .catch(async (err)=>{
+    customPopUp(err.message+" : we are so sorry for the inconvience","ok");
+    return false
+  })
 }

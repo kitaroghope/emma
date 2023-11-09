@@ -52,7 +52,7 @@ async function checkClient(){
             }
             return await checkClient();
         } catch (err) {
-            console.log("Mongo error: "+err.message)
+            console.log("Mongo error: "+err.message);
             return await checkClient();
         }
     }

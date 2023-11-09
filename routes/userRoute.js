@@ -90,8 +90,8 @@ user_route.post('/updateUser',auth.isLogout,auth.isAdmin,userController.updateUs
 user_route.post('/changePassword',auth.isLogout,auth.isAdmin, userController.updateUser);
 
 // adding and removing : cart operations
-user_route.post('/addToCart/:id', auth.isLogout,userController.addToCart);
-user_route.post('/removeFromCart/:id', auth.isLogout,userController.removeFromCart);
+user_route.post('/addToCart/:cid/:pid', auth.isLogout,userController.addToCart);
+user_route.post('/removeFromCart/:cid/pid', auth.isLogout,userController.removeFromCart);
 
 // make order or cancle order]
 user_route.post('/addToCart/:id', auth.isLogout,userController.addToCart);

@@ -1,8 +1,9 @@
+const db = require('../modules/mongoDBApi')
+var products = [];
 
 const isLogin = async (req,res,next)=>{
     try {
         if(req.session.user){
-            req.body.name = req.session.user._id
             res.render('home',{message:"Logged in already",user:req.session.user});
         }
         else{
@@ -18,16 +19,19 @@ const isLogin = async (req,res,next)=>{
 const isLogout = async (req,res,next)=>{
     try {
         if(req.session.user){
-            console.log(req.session.user)
-            req.body.name = req.session.user.fname;
             next();
         }
         else{
             req.body.name = "";
             console.log(req.body.name)
+            if(products.length == 0){
+                const p = await db.readRows({},"ekanu_store","products");
+                products = p.listings;
+            }
             res.render('home',{
                 message:"Login or register, for a better experience.",
-                user:req.body.name
+                user:req.body.name,
+                products:products
             });
         }
     } catch (err) {

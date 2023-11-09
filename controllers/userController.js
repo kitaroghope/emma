@@ -3,8 +3,12 @@ const uploadToFTP = require('../modules/ftp');
 // const sendVMail = require('../modules/sendMail');
 // const bcrypt = require('bcrypt');
 const fs = require('fs');
+const ObjectId = require('mongodb').ObjectId;
 
-
+async function getId(id){
+    const objectId = new ObjectId(id);
+    return objectId;
+}
 /*
 Tables and database
 dbname - ekanu_store
@@ -67,7 +71,7 @@ const login = async (req, res, next)=>{
 const logout = async (req, res, next)=>{
     try {
         req.session.destroy();
-        loadHome;
+        res.redirect('/')
     } catch (err) {
         res.render("error", {error:err.message});
     }
@@ -128,7 +132,7 @@ const addCustomer = async (req, res, next)=>{
         }
         else{
             await db.createListing(req.body,"ekanu_store","customers");
-            res.render("login",{user: req.body.name});
+            res.redirect('/login');
         }
     } catch (err) {
         res.render("error", {error:err.message});
@@ -180,15 +184,26 @@ const deleteUser = async (req, res, next)=>{
 }
 const addToCart = async (req, res, next)=>{
     try {
-        const cc = await db.readRow({$and:{number:req.body.number,product:req.body.product}},"ekanu_store","cart");
+        console.log("user: "+req.params.cid+" pro: "+req.params.pid)
+        const cc = await db.readRow({$and:[{cid:req.params.cid},{pid:req.body.product}]},"ekanu_store","cart");
         if(cc.found){
             await db.updateRow(cc.listing,{qty:(cc.listing.qty + 1)}), "ekanu_store","cart";
-            res.json({message: "Item is already in the cart."});
+            res.json({message: "Item is already in the cart.",inc:0});
         }
         else{
-            await db.createListing(req.body,"ekanu_store","cart");
-            await db.updateRow2({number:req.session.user.number}, {$inc:{qty:1}}, dbname, "customers");
-            res.json({message: "Item added to cart."});
+            const p = await getId(req.params.pid);
+            console.log(typeof p);
+            const cp = await db.readRow({_id:p},dbname,"products")
+            if(cp.found){
+                cp.listing.cid = req.params.cid
+                cp.listing.pid = cp.listing._id
+                delete cp.listing._id;
+                await db.createListing(cp.listing,"ekanu_store","cart");
+                await db.updateRow2({_id:req.params.cid}, {$inc:{qty:1}}, dbname, "customers");
+                res.json({message: "Item has been added to cart successfully",inc:1});
+            } else {
+                res.json({message: "Item is nolonger available in store",inc:0});
+            }
         }
     } catch (err) {
         res.render("error", {error:err.message});
