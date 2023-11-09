@@ -45,7 +45,7 @@ user_route.use(express.static(path.join(__dirname, '../public')));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = 'uploads/';// 
+    const uploadDir = 'public/';// 
     fs.mkdirSync(uploadDir, { recursive: true });
     cb(null, uploadDir);
   },

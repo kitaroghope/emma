@@ -256,3 +256,47 @@ async function postRoute(url){
       customPopUp(err.message+" : we are so sorry for the inconvience","ok");
   })
 }
+function updateQuantity(index, change) {
+  const quantityInput = $('.item-quantity').eq(index);
+  const currentQuantity = parseInt(quantityInput.val()) + change;
+
+  // Ensure the quantity doesn't go below 0
+  const newQuantity = currentQuantity < 0 ? 0 : currentQuantity;
+
+  // Update quantity input value
+  quantityInput.val(newQuantity);
+
+  // Update amount
+  const amount = updateAmount(quantityInput[0], parseFloat(quantityInput.data('price')));
+  quantityInput.closest('.card-body').find('.item-amount').text('$' + amount);
+
+  // Update total amount
+  updateTotalAmount();
+}
+function updateAmount(input, price) {
+  const quantity = parseInt(input.value);
+  const amount = quantity * price;
+  return amount.toFixed(2);
+}
+
+// Function to update total amount
+function updateTotalAmount() {
+  let totalAmount = 0;
+  // Loop through each item and update total amount
+  $('.item-quantity').each(function() {
+    const quantity = parseInt($(this).val());
+    const price = parseFloat($(this).data('price'));
+    totalAmount += quantity * price;
+  });
+  $('#totalAmount').text(totalAmount.toFixed(2));
+}
+
+// Attach onchange event to quantity input to update amount and total amount
+$('.item-quantity').on('input', function() {
+  const amount = updateAmount(this, parseFloat($(this).data('price')));
+  $(this).closest('.card-body').find('.item-amount').text('$' + amount);
+  updateTotalAmount();
+});
+
+// Initial total amount calculation
+updateTotalAmount();
