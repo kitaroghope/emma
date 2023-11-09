@@ -100,7 +100,7 @@
                       <% } else {%>
                         <li class="nav-item">
                             <a class="nav-link" href="/account">Hi, <%= user.lname %></a>
-                            <a class="nav-link" href="/account">Cart: <%= user.qty %></a>
+                            <a class="nav-link" id="nqty" href="/account">Cart: <%= user.qty %></a>
                         </li>
                       <% } %>
                     </ul>
@@ -109,10 +109,13 @@
               </nav>
         </div>
         <div class="row p-2 f" id="register">
-
             <h2>Register</h2><br>
+            <button class="btn btn-light" onclick="openl(this, '#login')">No, I have an account</button>
               <form action="/addCustomer" method="post" class="f">
                   <div class="row">
+                      <div class="mb-3">
+                        <label for="names" class="form-label">Your Name</label>
+                      </div>
                       <div class="col">
                         <input type="text" name="fname" class="form-control" placeholder="First name" aria-label="First name" required>
                       </div>
@@ -123,14 +126,13 @@
                   <div class="row">
                         <div class="mb-3">
                           <label for="number" class="form-label">Contact</label>
-                          <input type="email" placeholder="07XXXXXXXX" class="form-control" id="email" name="number" aria-describedby="emailHelp" required>
+                          <input type="text" placeholder="07XXXXXXXX" class="form-control" id="email" name="number"  required>
                           <div id="emailHelp" class="form-text">We'll never share your number with anyone.</div>
                         </div>
                         <div class="mb-3">
                           <label for="password" class="form-label">password</label>
                           <input type="password" class="form-control" id="password" onchange="checkpass()" name="password" required>
                         </div>
-                        <input type="number" style="display: none;">
                         <div class="mb-3">
                           <label for="ppassword" class="form-label">Confirm Password</label>
                           <input type="password"  class="form-control" id="ppassword" onchange="checkpass()" required>
@@ -139,11 +141,15 @@
                         <h2>Address</h2>
                         <div class="mb-3">
                           <label for="country" class="form-label">Country</label>
-                          <input type="text" class="form-control" id="country" name="country" aria-describedby="emailHelp" required>
+                          <input type="text" class="form-control" id="country" name="country"  required>
+                        </div>
+                        <div class="mb-3" >
+                          <label for="qty" class="form-label">qty</label>
+                          <input type="number" value="0" class="form-control" id="qty" name="qty"  required>
                         </div>
                         <div class="mb-3">
                           <label for="city" class="form-label">City</label>
-                          <input type="text" class="form-control" id="details" name="details" aria-describedby="emailHelp" required>
+                          <input type="text" class="form-control" id="details" name="details" required>
                         </div>
                         <div class="mb-3">
                           <label for="address" class="form-label">Address</label>
@@ -160,7 +166,7 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-2 col-form-label">Number</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" name="number" required>
+                    <input type="text" class="form-control" id="inputEmail3" name="number" required>
                   </div>
                 </div>
                 <div class="row mb-3">

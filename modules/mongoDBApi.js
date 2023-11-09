@@ -251,13 +251,15 @@ async function updateRows2(commonColumn, upddateList,dbName,tName){
  * @returns nothing.
  */
 async function deleteRow(nameOfRow,dbName,tName){
-    if(!await checkClient()){return;}
+    if(!await checkClient()){return 0;}
     try{
         const result = await client.db(dbName).collection(tName).deleteOne(nameOfRow);
         console.log(`deleted ${result.deletedCount} row(s)`);
+        return result.deletedCount;
     }
     catch (err) {
         console.log(`An error occurred: ${err.message}`);
+        return 0;
     }
 }
 // Deleting rows: Name of row is an object, i.e. {"column name": "Value"}

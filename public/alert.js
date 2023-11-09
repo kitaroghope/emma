@@ -247,6 +247,9 @@ async function postRoute(url){
   })
   .then(async (data)=>{
     customPopUp(data.message,"ok");
+    if(typeof data.qty !== 'undefined'){
+      $('#nqty').text('Cart: '+data.qty)
+    }
     return true
   })
   .catch(async (err)=>{

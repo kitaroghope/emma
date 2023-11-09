@@ -91,9 +91,11 @@ user_route.post('/changePassword',auth.isLogout,auth.isAdmin, userController.upd
 
 // adding and removing : cart operations
 user_route.post('/addToCart/:cid/:pid', auth.isLogout,userController.addToCart);
-user_route.post('/removeFromCart/:cid/pid', auth.isLogout,userController.removeFromCart);
+user_route.post('/removeFromCart/:cid/:pid', auth.isLogout,userController.removeFromCart);
 
 // make order or cancle order]
+user_route.get('/cart',auth.isLogout, userController.loadCart);
+
 user_route.post('/addToCart/:id', auth.isLogout,userController.addToCart);
 user_route.post('/removeFromCart/:id', auth.isLogout,userController.removeFromCart);
 

@@ -49,7 +49,7 @@ const loadAdminPannel = async (req, res, next)=>{
             const w = await db.readRows({}, dbname, "users");
             products = w.listings;
         }
-        res.render("adminPannel",{workers:workers, user: req.body.name, qty:req.session.user.qty, id:req.session.user._id});
+        res.render("adminPannel",{workers:workers, user:req.session.user});
     } catch (err) {
         res.render("error", {error:err.message});
     }
@@ -80,7 +80,7 @@ const loadProduct = async (req, res, next)=>{
     try {
         
         const index = req.params.index
-        res.render("product",{product:products[index], user: req.body.name, qty:req.session.user.qty, id:req.session.user._id});
+        res.render("product",{product:products[index], user:req.session.user});
     } catch (err) {
         res.render("error", {error:err.message});
     }
@@ -98,8 +98,8 @@ const addProduct = async (req, res, next)=>{
 
 const loadCart = async (req, res, next)=>{
     try {
-        const items = await db.readRows({number:req.session.user.number},dbname,"cart");
-        res.render("cart",{items:items.listing, user: req.body.name, qty:req.session.user.qty, id:req.session.user._id})
+        const items = await db.readRows({cid:req.session.user._id},dbname,"cart");
+        res.render("cart",{items:items.listings, user: req.session.user});
     } catch (err) {
         res.render("error", {error:err.message});
     }
@@ -182,10 +182,13 @@ const deleteUser = async (req, res, next)=>{
         res.render("error", {error:err.message});
     }
 }
+
 const addToCart = async (req, res, next)=>{
     try {
-        console.log("user: "+req.params.cid+" pro: "+req.params.pid)
-        const cc = await db.readRow({$and:[{cid:req.params.cid},{pid:req.body.product}]},"ekanu_store","cart");
+        var nqty = eval(req.session.user.qty);
+        const pi = await getId(req.params.pid);
+        // console.log("user: "+req.params.cid+" pro: "+req.params.pid)
+        const cc = await db.readRow({$and:[{cid:req.params.cid},{pid:pi}]},"ekanu_store","cart");
         if(cc.found){
             await db.updateRow(cc.listing,{qty:(cc.listing.qty + 1)}), "ekanu_store","cart";
             res.json({message: "Item is already in the cart.",inc:0});
@@ -195,28 +198,45 @@ const addToCart = async (req, res, next)=>{
             console.log(typeof p);
             const cp = await db.readRow({_id:p},dbname,"products")
             if(cp.found){
+                var str = cp.listing._id;
                 cp.listing.cid = req.params.cid
-                cp.listing.pid = cp.listing._id
+                cp.listing.pid = str;
+                cp.listing.qty =  0;
                 delete cp.listing._id;
+                delete cp.listing.facilities;
+                const ci = await getId(req.params.cid)
+
                 await db.createListing(cp.listing,"ekanu_store","cart");
-                await db.updateRow2({_id:req.params.cid}, {$inc:{qty:1}}, dbname, "customers");
-                res.json({message: "Item has been added to cart successfully",inc:1});
+                await db.updateRow2({_id:ci}, {qty:nqty+1}, dbname, "customers");
+                res.json({message: "Item has been added to cart successfully",qty:req.session.user.qty});
             } else {
-                res.json({message: "Item is nolonger available in store",inc:0});
+                res.json({message: "Item is nolonger available in store",qty:req.session.user.qty});
             }
         }
     } catch (err) {
-        res.render("error", {error:err.message});
+        res.json({message: err.message+" : Error from server, try loging in",qty:req.session.user.qty});
     }
 }
 const removeFromCart = async (req, res, next)=>{
     try {
-        await db.deleteRow({$and:{id:req.params.id,prod:req.params.prod}}, dbname, "cart");
-        const items = await db.readRows({},dbname,"cart");
-        await db.updateRow2({id:req.params.id}, {$inc:{qty:-1}}, dbname, "customers");
-        res.json({message: "Item is deleted from cart."});
+        var nqty = eval(req.session.user.qty);
+        const pi = await getId(req.params.pid);
+        const ci = await getId(req.params.cid)
+        const del =  await db.deleteRow({$and:[{cid:req.params.cid},{pid:pi}]}, dbname, "cart");
+        if(del > 0){
+            if(nqty>0){
+                nqty = nqty-1;
+                await db.updateRow2({_id:ci}, {qty:nqty}, dbname, "customers");
+                req.session.user.qty = nqty
+            }else{
+                
+            }
+            res.json({message: "Item is deleted from cart.",qty:req.session.user.qty});
+        }else{
+            res.json({message: "Nothing was deleted, Item was not found in cart. please refresh",qty:req.session.user.qty});
+        }
     } catch (err) {
-        res.render("error", {error:err.message});
+        res.json({message: err.message,qty:req.session.user.qty});
     }
 }
 const placeOrder = async (req, res, next)=>{

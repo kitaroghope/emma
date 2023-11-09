@@ -40,7 +40,7 @@
                       <% } else {%>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Hi, <%= user.lname %></a>
-                            <a class="nav-link" href="#">Cart: <%= user.qty %></a>
+                            <a class="nav-link" id="nqty" href="/cart">Cart: <%= user.qty %></a>
                             <a class="nav-link" href="/logout">Logout</a>
                         </li>
                       <% } %>

@@ -39,8 +39,9 @@
                         </li>
                       <% } else {%>
                         <li class="nav-item">
-                            <a class="nav-link" href="/account">Hi, <%= user %></a>
-                            <a class="nav-link" href="/cart">Cart: qty</a> <!--  /cart/< user.id > -->
+                            <a class="nav-link" href="/account">Hi, <%= user.lname %></a>
+                            <a class="nav-link" id="nqty" href="#">Cart: <%= user.qty %></a> <!--  /cart/< user.id > -->
+                            <a class="nav-link" href="/account">Logout</a>
                         </li>
                       <% } %>
                     </ul>
@@ -50,7 +51,18 @@
         </div>
         <br>
         <div class="row" id="wel">
-          <h1>Emma Store</h1>
+          <h1>Your goods will be delivered to:</h1>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">
+                <%= user.country %>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><%= user.details %></h5>
+                <p class="card-text"><%= user.address %></p>
+              </div>
+            </div>
+          </div>       
         </div>
         <br>
         <div class="row middle">
@@ -64,16 +76,16 @@
                         <div class="col-md-4">
                           <div class="card">
                             <div class="card-header">
-                              <%= items[i].name %>
+                              <%= items[i].product %>
                             </div>
                             <img class="prodImg" src="http://lugandahymnalnew.infinityfreeapp.com/uploads/<%= items[i].url %>" alt="">
                             <div class="card-body">
                               <h5 class="card-title">Details</h5>
                               <p class="card-text"><%= items[i].details %></p>
                               <button onclick="update(-1)" class="btn btn-primary">-</button>
-                              <input type="number" value="<%= items[i].qty %>" onchange="One(this,'<%= _id %>','<%= items[i]._id %>')">
+                              <input type="number" value="<%= items[i].qty %>" onchange="One(this,'<%= user._id %>','<%= items[i]._id %>')">
                               <button onclick="update(1)" class="btn btn-primary">+</button>
-                              <button onclick="removeFromCart('<%= user._id %>','<%= items[i]._id %>')" class="btn btn-danger">delete</button>
+                              <button onclick="postRoute('removeFromCart/<%= items[i].cid %>/<%= items[i].pid %>')" class="btn btn-danger">delete</button>
                             </div>
                           </div>
                         </div>                
