@@ -191,7 +191,7 @@ const addToCart = async (req, res, next)=>{
         const cc = await db.readRow({$and:[{cid:req.params.cid},{pid:pi}]},"ekanu_store","cart");
         if(cc.found){
             await db.updateRow(cc.listing,{qty:(cc.listing.qty + 1)}), "ekanu_store","cart";
-            res.json({message: "Item is already in the cart.",inc:0});
+            res.json({message: "Item is already in the cart.",nqty:nqty});
         }
         else{
             const p = await getId(req.params.pid);
@@ -208,6 +208,7 @@ const addToCart = async (req, res, next)=>{
 
                 await db.createListing(cp.listing,"ekanu_store","cart");
                 await db.updateRow2({_id:ci}, {qty:nqty+1}, dbname, "customers");
+                req.session.user.qty = nqty+1;
                 res.json({message: "Item has been added to cart successfully",qty:req.session.user.qty});
             } else {
                 res.json({message: "Item is nolonger available in store",qty:req.session.user.qty});
@@ -228,9 +229,8 @@ const removeFromCart = async (req, res, next)=>{
                 nqty = nqty-1;
                 await db.updateRow2({_id:ci}, {qty:nqty}, dbname, "customers");
                 req.session.user.qty = nqty
-            }else{
-                
             }
+            req.session.user.qty = nqty
             res.json({message: "Item is deleted from cart.",qty:req.session.user.qty});
         }else{
             res.json({message: "Nothing was deleted, Item was not found in cart. please refresh",qty:req.session.user.qty});

@@ -253,7 +253,6 @@ async function postRoute(url){
     return true
   })
   .catch(async (err)=>{
-    customPopUp(err.message+" : we are so sorry for the inconvience","ok");
-    return false
+      customPopUp(err.message+" : we are so sorry for the inconvience","ok");
   })
 }
